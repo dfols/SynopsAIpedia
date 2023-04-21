@@ -1,0 +1,18 @@
+{
+  "name": "web_scrape_ai",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chatgpt": "^5.2.2",
+    "dotenv": "^16.0.3",
+    "wtf_wikipedia": "^10.1.4"
+  }
+}
