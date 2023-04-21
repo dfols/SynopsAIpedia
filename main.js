@@ -12,7 +12,7 @@ const rl = readline.createInterface({
 const api = new ChatGPTAPI({
   apiKey: process.env.OPENAI_API_KEY,
   systemMessage:
-    "Summarize the following content while never saying things such as the article, or this passage, etc. also if there are follow up questions being asked, you need to make sure you are not going to repeat any informatoin unless it is critical for the summary",
+    "Summarize the following content while never saying things such as the article, or this passage, etc. also if there are follow up questions being asked, you need to make sure you are not going to repeat any information unless it is critical for the summary",
   completionParams: {
     model: "gpt-3.5-turbo-0301",
   },
