@@ -1,7 +1,7 @@
 # SynopsAIpedia
 
 This project is a Node.js application that uses the `wtf_wikipedia` library to
-scrape information from Wikipedia articles and the OpenAI API (GPT-3.5) to
+scrape information from Wikipedia articles and the `OpenAI API (GPT-3.5)` to
 summarize the content.
 
 ## Usage
