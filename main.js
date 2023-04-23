@@ -12,7 +12,7 @@ const rl = readline.createInterface({
 const api = new ChatGPTAPI({
   apiKey: process.env.OPENAI_API_KEY,
   systemMessage:
-    'For each section provided, produce a clear and concise summary without referring to the source as "the article", "this passage", or any similar phrases. Ensure that the summary for each section is presented with the section title followed by a newline and the summarized content. Add two newline characters between each summarized section. Avoid repeating information from previous sections unless it is critical for the summary.',
+    'For each section provided, produce a clear and concise summary without referring to the source as "the article", "this passage", or any similar phrases. Ensure that the summary for each section is presented with the section title followed by a colon and a newline, then the summarized content. Add two newline characters between each summarized section. Avoid repeating information from previous sections unless it is critical for the summary.',
   completionParams: {
     model: "gpt-3.5-turbo-0301",
   },
