@@ -12,7 +12,7 @@ const rl = readline.createInterface({
 const api = new ChatGPTAPI({
   apiKey: process.env.OPENAI_API_KEY,
   systemMessage:
-    "Summarize the following content while never saying things such as the article, or this passage, etc. also if there are follow up questions being asked, you need to make sure you are not going to repeat any information unless it is critical for the summary",
+    'For each section provided, produce a clear and concise summary without referring to the source as "the article", "this passage", or any similar phrases. Ensure that the summary for each section is presented with the section title followed by a newline and the summarized content. Add two newline characters between each summarized section. Avoid repeating information from previous sections unless it is critical for the summary.',
   completionParams: {
     model: "gpt-3.5-turbo-0301",
   },
@@ -21,18 +21,22 @@ const api = new ChatGPTAPI({
 let contentChunks = [];
 let currentChunk = "";
 
-function addContent({ sentences }) {
+function addContent({ sentences }, sectionTitle) {
   const content = sentences?.map((sentence) => sentence.text).join(" ");
-  currentChunk += content;
+  currentChunk += `Section: ${sectionTitle}\nContent: ${content}\n\n`;
 }
 
 function parseSection(section) {
   const sectionTitle = section.title || "Intro";
-  if (["See also", "Notes", "External links"].includes(sectionTitle)) {
+  if (
+    ["See also", "Notes", "External links", "Further reading"].includes(
+      sectionTitle
+    )
+  ) {
     return "";
   }
   section.paragraphs?.forEach((paragraph) => {
-    addContent(paragraph);
+    addContent(paragraph, sectionTitle);
   });
   if (currentChunk.length > 3000) {
     contentChunks.push(currentChunk);
@@ -66,21 +70,28 @@ async function summarizeContent(contentChunks) {
       return res.text;
     })
   );
-  return summaries.join("\n");
+  const joinedSummaries = summaries
+    .map((summary, index) => (index > 0 ? `\n\n${summary}` : summary))
+    .join("");
+
+  return joinedSummaries;
 }
 
 async function parseDoc() {
-  rl.question("Enter a Wikipedia article title: ", async function (articleTitle) {
-    try {
-      const doc = await fetchArticle(articleTitle);
-      parseSections(doc);
-      rl.close();
-      const summaries = await summarizeContent(contentChunks);
-      console.log(summaries);
-    } catch (error) {
-      console.error(error.message);
+  rl.question(
+    "Enter a Wikipedia article title: ",
+    async function (articleTitle) {
+      try {
+        const doc = await fetchArticle(articleTitle);
+        parseSections(doc);
+        rl.close();
+        const summaries = await summarizeContent(contentChunks);
+        console.log(summaries);
+      } catch (error) {
+        console.error(error.message);
+      }
     }
-  });
+  );
 }
 
 parseDoc().catch((err) => {
